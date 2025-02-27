@@ -1,0 +1,4 @@
+build*
+.image.done*
+vendor
+trip-accountant
