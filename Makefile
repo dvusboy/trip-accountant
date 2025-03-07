@@ -7,18 +7,28 @@ COMMIT          := $(shell git rev-parse HEAD)
 GO_VERSION      := 1.24
 RELEASE         ?= 1
 TAG              = dvusboy/$(NAME):$(VERSION)-$(RELEASE)
+SRC              = $(wildcard *.go trip/*.go)
 LOG              = build-$(VERSION).log
 MARKER           = .image.done.$(VERSION)
+PREFIX           = /srv/$(NAME)
 
 .PHONY : default
 default : $(MARKER)
 
-$(MARKER) :
+.PHONY : fmt
+fmt : $(SRC)
+	go fmt ./...
+
+$(NAME) : $(SRC)
+	go build -v .
+
+$(MARKER) : Dockerfile $(SRC)
 	[ -s "$@" ] && docker image rm `cat "$@"`; rm -f "$@"
 	docker build --pull --rm \
 	--build-arg GO_VERSION=$(GO_VERSION) \
-	--build-arg VERSION=$(VERSION) \
 	--build-arg REPO=github.com/$(REPO) \
+	--build-arg PREFIX=$(PREFIX) \
+	--build-arg VERSION=$(VERSION) \
 	--build-arg COMMIT=$(COMMIT) \
 	--iidfile=$@ \
 	--tag=$(TAG) . 2>&1 | tee $(LOG)
@@ -40,7 +50,7 @@ clean-img :
 clean-all : clean clean-img
 
 .PHONY : go-test
-go-test :
+go-test : $(SRC)
 	go test -v ./...
 
 .PHONY : api-test

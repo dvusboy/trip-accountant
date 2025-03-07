@@ -1,3 +1,10 @@
+// Package trip implements the data model for managing trip expenses
+// the key purpose is to compute the settlement of the expenses by the
+// participants.
+//
+// This unit focuses on user data model. All participants in a trip
+// are necessarily users.
+
 package trip
 
 import (
@@ -7,7 +14,7 @@ import (
 	"strings"
 )
 
-// Some global variables storing SQL statements
+// Some global constants used to store SQL statements
 const (
 	userSelect         = "SELECT user_id, verified FROM tuser WHERE email=?"
 	userInsert         = "INSERT INTO tuser (email, verified) VALUES (?, ?)"

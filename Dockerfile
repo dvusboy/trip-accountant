@@ -1,7 +1,8 @@
 ARG GO_VERSION=1.24
-ARG VERSION
-ARG COMMIT
-ARG REPO
+ARG REPO=dvusboy/trip-accountant
+ARG PREFIX=/srv/trip-accountant
+ARG VERSION=0.0.0
+ARG COMMIT=unknown
 
 FROM golang:${GO_VERSION} AS build
 
@@ -22,15 +23,15 @@ LABEL VERSION=${VERSION} \
 RUN apt-get --allow-insecure-repositories update \
 	&& apt-get install -y --no-install-recommends \
 		sqlite3 \
-	&& mkdir -p /srv/trip-accountant/bin \
-	&& mkdir /srv/trip-accountant/data
+	&& mkdir -p ${PREFIX}/bin \
+	&& mkdir ${PREFIX}/data
 
 EXPOSE 8081
 ENV GIN_MODE=release
 
-COPY --from=build /go/src/${REPO}/trip-accountant /srv/trip-accountant/bin/
-COPY --from=build /go/src/${REPO}/entrypoint.sh /srv/trip-accountant/bin
+COPY --from=build /go/src/${REPO}/trip-accountant ${PREFIX}/bin/
+COPY --from=build /go/src/${REPO}/entrypoint.sh ${PREFIX}/bin
 
-WORKDIR /srv/trip-accountant
-ENTRYPOINT ["/srv/trip-accountant/bin/entrypoint.sh"]
-CMD ["/srv/trip-accountant/bin/trip-accountant"]
+WORKDIR ${PREFIX}
+ENTRYPOINT ["${PREFIX}/bin/entrypoint.sh"]
+CMD ["${PREFIX}/bin/trip-accountant"]

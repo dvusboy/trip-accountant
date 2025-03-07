@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# This script starts a container of the trip-accountant image,
+# and uses "curl" to make some REST API calls against it.
+# It only tests happy-paths and doesn't validate the returned
+# JSON messages.
+# At the end, the container is stopped and cleaned up.
+
 set -e
 
 image_tag=$1

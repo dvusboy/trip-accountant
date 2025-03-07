@@ -1,3 +1,10 @@
+// Package trip implements the data model for managing trip expenses
+// the key purpose is to compute the settlement of the expenses by the
+// participants.
+//
+// This unit implements some unit tests for trip and expense related
+// functions.
+
 package trip
 
 import (

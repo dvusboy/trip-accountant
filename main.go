@@ -20,9 +20,9 @@ import (
 var (
 	// db is the database handle
 	db *sql.DB
-	// dbPath is the SQLite3 DB file path
+	// dbPath is the SQLite3 DB file path, it'd be extracted from dbURL
 	dbPath string
-	// dbURL is for storing flag --db for DB access schema
+	// dbURL is for storing flag --db for DB access URL
 	dbURL = "sqlite3:///srv/trip-accountant/data/trips.db"
 	// port is the listening port, defaults to 8081
 	port = 8081
@@ -76,6 +76,7 @@ func (e expenseJSON) Translate() (*trip.Expense, error) {
 	return r, nil
 }
 
+// init sets up the CLI flags
 func init() {
 	flag.IntVar(&port, "port", port, "bind port")
 	flag.StringVar(&dbURL, "db", dbURL, "database URL")

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# This is the entrypoint script, it's primary job is to initiate the
+# specified SQLite3 DB file, if it doesn't exist.
+# If the first argument isn't APP, and it looks like an argument,
+# then APP would be prepended to the list of arguments. If it is
+# the APP, then check_db() is called before APP is launched
+# If the first argument isn't APP, e.g. /bin/bash, then that'd
+# be launched instead.
+
 APP=/srv/trip-accountant/bin/trip-accountant
 DBFILE=/srv/trip-accountant/data/trips.db
 

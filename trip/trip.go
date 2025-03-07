@@ -1,3 +1,10 @@
+// Package trip implements the data model for managing trip expenses
+// the key purpose is to compute the settlement of the expenses by the
+// participants.
+//
+// This unit focuses on trip and expense data model. The algorithm
+// for settlement is also implemented here.
+
 package trip
 
 import (
@@ -10,7 +17,7 @@ import (
 	"time"
 )
 
-// Some global variables storing SQL statements
+// Some global contants used to store SQL statements
 const (
 	tripByOwnerSelect = `SELECT t.trip_id, t.name, t.name_lower, t.created_at, t.start_date, t.end_date, t.description
 FROM trip AS t, participant AS p, tuser AS u
